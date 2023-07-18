@@ -70,13 +70,14 @@ public class BoardController {
 		//@PathVariablesms {변수} 안에 괄호를 열어 URL에 사용될 변수명으로 사용. 
 		 
 		 model.addAttribute("board", boardService.view(id));
+		 return "board/view";
 	 }
 	 
 }
 
 
 //model에 데이터를 담을 때 addAttribute() 메소드를 사용함.
-//사용 방법 2가지
+//사용 방법 
 //#1 Model addAttribute(String name, Object value)
 //-> value 객체를 name 이름으로 추가한다. 뷰 코드에서는 name으로 지정한 이름을 통해서 value를 사용한다.
 
