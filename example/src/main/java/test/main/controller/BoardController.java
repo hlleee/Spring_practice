@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import test.main.entity.Board;
 import test.main.service.BoardService;
 import org.springframework.ui.Model;
@@ -20,9 +21,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
-@RequiredArgsConstructor
+@Slf4j
 @Controller
 @RequestMapping("/board")
+@RequiredArgsConstructor
 public class BoardController {
 	
 	private final BoardService boardService;
@@ -39,18 +41,18 @@ public class BoardController {
 	//아이디를 기준으로 분류한다는게 뭐지?
 	 @GetMapping("/list")
 	 public String list(Model model,
-			 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageble,
+			 			@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
 			 			String searchKeyword
 	) {
 		 Page<Board> list = null; //게시판 초기화
 		 
 		 //searchKeyword가 없으면 select * from Board
 		 if (searchKeyword == null) {
-			 list = boardService.list(Pageable); 
+			 list = boardService.list(pageable);
 			 //->BoardService 클래스 list 함수 코딩 필요.
 		 } else {
 			 //select * from Board where title=searchKeyword
-			 list = boardService.searchList(searchKeyword, pageable)
+			 list = boardService.searchList(searchKeyword, pageable);
 			//->BoardService 클래스 searchList 함수 코딩 필요
 		 }
 		 int nowPage = list.getPageable().getPageNumber() + 1;//현재 페이지
@@ -67,10 +69,36 @@ public class BoardController {
 	 
 	 @GetMapping("/view/{id}") //url에 view/id 번호 입력 혹은 a태그로 view/{id} 호출
 	 public String view(Model model, @PathVariable("id") Long id) {
-		//@PathVariablesms {변수} 안에 괄호를 열어 URL에 사용될 변수명으로 사용. 
+		//@PathVariable은 {변수} 안에 괄호를 열어 URL에 사용될 변수명으로 사용. 
 		 
 		 model.addAttribute("board", boardService.view(id));
 		 return "board/view";
+	 }
+	 
+	 @GetMapping("/delete/{id}")
+	 public String delete(@PathVariable("id") Long id) {
+		 boardService.deleteById(id);
+		 
+		 return "redirect:/board/list";  //redirect는 이전 페이지를 다시 호출할 때 사용 없으면 에러
+	 }
+	 
+	 @GetMapping("/modify/{id}") //???
+	 public String modify(@PathVariable("id") Long id, Model model) {
+		 model.addAttribute("board", boardService.view(id));
+		 
+		 return "board/modify";
+	 }
+	 
+	 @GetMapping("/update/{id}")
+	 public String update(@PathVariable("id") Long id, Board board) {
+		 
+		 Board boardTemp = boardService.view(id);
+		 boardTemp.setTitle(board.getTitle()); //title을 매개변수 board에 담긴 title로 수정
+		 boardTemp.setContent(board.getContent());
+		 
+		 boardService.write(boardTemp);
+		 
+		 return "redirect:/board/list";
 	 }
 	 
 }
