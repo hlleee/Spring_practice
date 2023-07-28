@@ -27,13 +27,7 @@ import lombok.Data;
 @RequiredArgsConstructor
 public class BoardController {
 	
-	private final BoardService boardService;
-//	
-//	 @PostMapping("/writedo")	//delete,insert,update일 때 postMapping ,,, select는 GetMapping
-//	    public String writedo(Board board, Model model) {
-//	        boardService.write(board);
-//	        
-//	    }
+	private final BoardService boardService = null;
 	 
 	//게시판 목록.
 	//pageable은 가져온 데이터를 페이지화 시키는것.
