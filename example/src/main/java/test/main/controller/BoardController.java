@@ -27,7 +27,7 @@ import lombok.Data;
 @RequiredArgsConstructor
 public class BoardController {
 	
-	private final BoardService boardService = null;
+	private final BoardService boardService;
 	 
 	//게시판 목록.
 	//pageable은 가져온 데이터를 페이지화 시키는것.
