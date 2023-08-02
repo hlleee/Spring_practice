@@ -28,6 +28,23 @@ import lombok.Data;
 public class BoardController {
 	
 	private final BoardService boardService;
+	
+	@GetMapping("/write")
+	public String write() {
+		return "board/write";//board 폴더의 write.html 호출
+	}
+	
+	@GetMapping("/writedo")
+	public String writedo(Board board, Model model) {
+		
+		boardService.write(board);
+		
+		model.addAttribute("message", "글 작성이 완료되었습니다.");
+		model.addAttribute("searchUrl", "/board/list");
+		
+		return "board/message"; //board 폴더의 meassage 폴더 호출
+		
+	}
 	 
 	//게시판 목록.
 	//pageable은 가져온 데이터를 페이지화 시키는것.
