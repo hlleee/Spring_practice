@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import test.main.entity.Board;
 import test.main.service.BoardService;
@@ -19,8 +20,10 @@ import org.springframework.ui.Model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
-
+@Getter
+@Setter
 @Slf4j
 @Controller
 @RequestMapping("/board")
